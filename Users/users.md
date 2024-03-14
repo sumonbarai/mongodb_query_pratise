@@ -1,10 +1,38 @@
 ## 1. how many users are active ?
 
 ```javascript
-
+[
+  {
+    $match: {
+      isActive: true,
+    },
+  },
+  {
+    $count: "active User",
+  },
+];
 ```
 
-what is the average age of the all users ?
+## 2. what is the average age of the all users ?
+
+```javascript
+[
+  {
+    $group: {
+      _id: null,
+      average_age: {
+        $avg: "$age",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+    },
+  },
+];
+```
+
 list the top 5 most common favorite fruits among users ?
 find the total number of male and female ?
 which county has the hightest number of registered users ?
