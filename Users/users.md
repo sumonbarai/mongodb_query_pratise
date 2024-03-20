@@ -110,7 +110,64 @@
 ]
 ```
 
-what is the average numbers of tages per users?
+## 7. what is the average numbers of tages per users?
+
+```
+[
+  {
+    $unwind: "$tags",
+  },
+  {
+    $group: {
+      _id: "$_id",
+      perUserTags: {
+        $sum: 1,
+      },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      averageTagPerUser: {
+        $avg: "$perUserTags",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+    },
+  },
+]
+
+or,
+
+[
+  {
+    $addFields: {
+      tagsNumber: {
+        $size: {
+          $ifNull: ["$tags", []],
+        },
+      },
+    },
+  },
+  {
+    $group: {
+      _id: null,
+      averageTagsUser: {
+        $avg: "$tagsNumber",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+    },
+  },
+]
+```
+
 how many users have enum as one of their tags ?
 what are the names and age of users who are inactive and have velit as a tag?
 how many users a phone number starting with "+1(940) " ?
