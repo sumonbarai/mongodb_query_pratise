@@ -168,7 +168,124 @@ or,
 ]
 ```
 
-how many users have enum as one of their tags ?
-what are the names and age of users who are inactive and have velit as a tag?
-how many users a phone number starting with "+1(940) " ?
-who has registered the most recently ?
+## 8. how many users have enum as one of their tags ?
+
+```
+[
+  {
+    $match: {
+      tags: "enim",
+    },
+  },
+  {
+    $count: "total",
+  },
+]
+```
+
+## 9. what are the names and age of users who are inactive and have velit as a tag?
+
+```
+[
+  {
+    $match: {
+      isActive: false,
+      tags: "velit",
+    },
+  },
+  {
+    $project: {
+      name: 1,
+      age: 1,
+    },
+  },
+]
+```
+
+## 10. how many users a phone number starting with "+1(940) " ?
+
+```
+[
+  {
+    $match: {
+      "company.phone": { $regex: /^\+1 \(940\)/ },
+    },
+  },
+  {
+    $count: "users",
+  },
+]
+```
+
+## 11. find out five user who has registered the most recently ?
+
+```
+[
+  {
+    $sort: {
+      registered: -1,
+    },
+  },
+  {
+    $limit: 5,
+  },
+]
+
+```
+
+## 12. categories users by their favorite fruits ?
+
+```
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      users: {
+        $push: "$$ROOT"
+      }
+    }
+  }
+]
+```
+
+## 13. How many users have 'ad' as second tag in their list of tags ?
+
+```
+[
+  {
+    $match: {
+      "tags.1": "ad",
+    },
+  },
+  {
+    $count: "user",
+  },
+]
+```
+
+## 14. find users who have both "enim" and "id" as their tags ?
+
+```
+[
+  {
+    $match: {
+      tags: {
+        $all: ["enim", "id"],
+      },
+    },
+  },
+]
+```
+
+## 15. list all company located in USA
+
+```
+[
+  {
+    $match: {
+      "company.location.country": "USA",
+    },
+  },
+]
+
+```
